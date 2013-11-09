@@ -1,8 +1,14 @@
 __author__ = 'Janek Krukowski'
 import random
-from itertools import izip
+from itertools import izip, tee
 
 random.seed()
+
+def pairwise(iterable):
+    "s -> (s0,s1), (s1,s2), (s2, s3), ..."
+    a, b = tee(iterable)
+    next(b, None)
+    return izip(a, b)
 
 class Hd(object):
 
@@ -61,7 +67,7 @@ class Fcfs(Algo):
 
     def process(self):
         self.move(self.first, self.demand.data[0])
-        for i, j in izip(self.demand.data[0::2], self.demand.data[1::2]):
+        for i, j in pairwise(self.demand.data):
             self.move(i, j)
 
 
