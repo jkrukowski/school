@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="4f87a48c-3ec2-4149-afeb-527308673fcd" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/vcs.xml" afterPath="$PROJECT_DIR$/.idea/vcs.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../so-z1/.idea/workspace.xml" afterPath="$PROJECT_DIR$/../so-z1/.idea/workspace.xml" />
+    <list default="true" id="4f87a48c-3ec2-4149-afeb-527308673fcd" name="Default" comment="implemented S">
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/so-z2/algo.py" afterPath="$PROJECT_DIR$/so-z2/algo.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="so-z2.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -29,7 +29,7 @@
       <file leaf-file-name="algo.py" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/so-z2/algo.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="57" column="0" selection-start="1115" selection-end="1115" vertical-scroll-proportion="0.34871796" vertical-offset="765" max-vertical-offset="1683">
+            <state line="94" column="17" selection-start="2206" selection-end="2206" vertical-scroll-proportion="0.9501466" vertical-offset="1274" max-vertical-offset="2040">
               <folding>
                 <element signature="e#31#44#0" expanded="true" />
               </folding>
@@ -146,7 +146,9 @@
       <module name="so-z2" />
       <option name="SCRIPT_NAME" value="$PROJECT_DIR$/so-z2/algo.py" />
       <option name="PARAMETERS" value="" />
+      <RunnerSettings RunnerId="PyDebugRunner" />
       <RunnerSettings RunnerId="PythonRunner" />
+      <ConfigurationWrapper RunnerId="PyDebugRunner" />
       <ConfigurationWrapper RunnerId="PythonRunner" />
       <method />
     </configuration>
@@ -323,18 +325,24 @@
       <created>1383679737178</created>
       <updated>1383679737178</updated>
     </task>
+    <task id="LOCAL-00001" summary="changed izip to pairwise, fixed issue">
+      <created>1383996170000</created>
+      <updated>1383996170000</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="ToolWindowManager">
     <frame x="-4" y="-4" width="1374" height="732" extended-state="6" />
     <editor active="true" />
     <layout>
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.24963397" sideWeight="0.6710311" order="0" side_tool="false" content_ui="combo" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.24963397" sideWeight="0.60065466" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.39934534" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3289689" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
@@ -355,9 +363,13 @@
     <option name="myTodoPanelSettings">
       <TodoPanelSettings />
     </option>
+    <MESSAGE value="changed izip to pairwise, fixed issue" />
+    <option name="LAST_COMMIT_MESSAGE" value="changed izip to pairwise, fixed issue" />
   </component>
   <component name="XDebuggerManager">
-    <breakpoint-manager />
+    <breakpoint-manager>
+      <option name="time" value="2" />
+    </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/so-z2/algo.py">
@@ -371,7 +383,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/so-z2/algo.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="57" column="0" selection-start="1115" selection-end="1115" vertical-scroll-proportion="0.34871796" vertical-offset="765" max-vertical-offset="1683">
+        <state line="94" column="17" selection-start="2206" selection-end="2206" vertical-scroll-proportion="0.9501466" vertical-offset="1274" max-vertical-offset="2040">
           <folding>
             <element signature="e#31#44#0" expanded="true" />
           </folding>
