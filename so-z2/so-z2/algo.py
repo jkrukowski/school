@@ -109,12 +109,20 @@ class Cscan(Algo):
     def __init__(self, hd, demand):
         super(Cscan, self).__init__(hd, demand)
 
+    def process(self):
+        higher = sorted([i for i in self.demand.data if i >= self.first])
+        higher.extend([hd.capacity-1, 0])
+        higher.extend(sorted([i for i in self.demand.data if i < self.first]))
+        self.move(self.first, higher[0])
+        for i, j in pairwise(higher):
+            self.move(i, j)
+
 
 if __name__ == '__main__':
-    hd = Hd(100, arg_start=65)
+    hd = Hd(200, arg_start=65)
     demand = Demand(hd, 10, arg_data=[100, 198, 44, 132, 2, 134, 70, 72])
     print demand.data, hd.start
-    fcfs = Scan(hd, demand)
+    fcfs = Cscan(hd, demand)
     fcfs.process()
     print fcfs.score
 
