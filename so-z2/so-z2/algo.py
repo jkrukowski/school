@@ -12,7 +12,24 @@ def pairwise(iterable):
     return izip(a, b)
 
 
+class Proc(object):
+    """Represents single IO item"""
+
+    def __init__(self, proc_no, deadline):
+        self.proc_no = proc_no
+        self.deadline = deadline
+
+    @classmethod
+    def from_random(cls, max_proc, max_deadline):
+        return cls(random.randint(0, max_proc), random.randint(0, max_deadline))
+
+    def __repr__(self):
+        return "<PROC: n: {0}, d: {1}>".format(self.proc_no, self.deadline)
+
+
 class Hd(object):
+    """Represents disk"""
+
     def __init__(self, nmax, arg_start=None):
         self.nmax = nmax
         self._data = [i for i in xrange(self.nmax)]
@@ -34,6 +51,7 @@ class Hd(object):
 
 
 class Demand(object):
+    """Represents demand"""
     def __init__(self, hd, count, arg_data=None):
         self.hd = hd
         self.count = count
@@ -47,6 +65,7 @@ class Demand(object):
 
 
 class Algo(object):
+    """Base class for all scheduling algorithms"""
     def __init__(self, hd, demand):
         self.hd = hd
         self.demand = demand
@@ -111,7 +130,7 @@ class Cscan(Algo):
 
     def process(self):
         higher = sorted([i for i in self.demand.data if i >= self.first])
-        higher.extend([hd.capacity-1, 0])
+        higher.extend([hd.capacity - 1, 0])
         higher.extend(sorted([i for i in self.demand.data if i < self.first]))
         self.move(self.first, higher[0])
         for i, j in pairwise(higher):
@@ -122,9 +141,10 @@ if __name__ == '__main__':
     hd = Hd(200, arg_start=65)
     demand = Demand(hd, 10, arg_data=[100, 198, 44, 132, 2, 134, 70, 72])
     print demand.data, hd.start
-    fcfs = Cscan(hd, demand)
-    fcfs.process()
-    print fcfs.score
+    algo = Cscan(hd, demand)
+    algo.process()
+    print algo.score
+    print Proc.from_random(10, 3)
 
 
 
