@@ -3,10 +3,11 @@ import random
 from itertools import izip, tee, chain
 
 random.seed()
+MAX_DEADLINE = 3
 
 
 def pairwise(iterable):
-    "s -> (s0,s1), (s1,s2), (s2, s3), ..."
+    """s -> (s0,s1), (s1,s2), (s2, s3), ..."""
     a, b = tee(iterable)
     next(b, None)
     return izip(a, b)
@@ -15,16 +16,27 @@ def pairwise(iterable):
 class Proc(object):
     """Represents single IO item"""
 
-    def __init__(self, proc_no, deadline):
-        self.proc_no = proc_no
+    def __init__(self, no, deadline=None):
+        self.no = no
         self.deadline = deadline
+        if self.deadline is None:
+            self.deadline = random.randint(0, MAX_DEADLINE)
 
     @classmethod
-    def from_random(cls, max_proc, max_deadline):
-        return cls(random.randint(0, max_proc), random.randint(0, max_deadline))
+    def from_random(cls, max_no):
+        return cls(random.randint(0, max_no))
+
+    def __sub__(self, other):
+        return Proc(self.no - other.no, self.deadline)
+
+    def __abs__(self):
+        return Proc(abs(self.no), self.deadline)
+
+    def __cmp__(self, other):
+        return cmp(self.no, other.no)
 
     def __repr__(self):
-        return "<PROC: n: {0}, d: {1}>".format(self.proc_no, self.deadline)
+        return "<PROC: n: {0}, d: {1}>".format(self.no, self.deadline)
 
 
 class Hd(object):
@@ -33,9 +45,9 @@ class Hd(object):
     def __init__(self, nmax, arg_start=None):
         self.nmax = nmax
         self._data = [i for i in xrange(self.nmax)]
-        self._start = arg_start
+        self._start = Proc(arg_start)
         if not arg_start:
-            self._start = random.randint(0, self.nmax)
+            self._start = Proc.from_random(self.nmax)
 
     @property
     def data(self):
@@ -51,7 +63,8 @@ class Hd(object):
 
 
 class Demand(object):
-    """Represents demand"""
+    """Represents single demand"""
+
     def __init__(self, hd, count, arg_data=None):
         self.hd = hd
         self.count = count
@@ -66,6 +79,7 @@ class Demand(object):
 
 class Algo(object):
     """Base class for all scheduling algorithms"""
+
     def __init__(self, hd, demand):
         self.hd = hd
         self.demand = demand
@@ -76,7 +90,7 @@ class Algo(object):
         raise NotImplementedError()
 
     def move(self, start, to):
-        self._score.append(abs(start - to))
+        self._score.append(abs(start - to).no)
 
     @property
     def score(self):
@@ -130,7 +144,7 @@ class Cscan(Algo):
 
     def process(self):
         higher = sorted([i for i in self.demand.data if i >= self.first])
-        higher.extend([hd.capacity - 1, 0])
+        higher.extend([Proc(hd.capacity - 1), Proc(0)])
         higher.extend(sorted([i for i in self.demand.data if i < self.first]))
         self.move(self.first, higher[0])
         for i, j in pairwise(higher):
@@ -139,12 +153,12 @@ class Cscan(Algo):
 
 if __name__ == '__main__':
     hd = Hd(200, arg_start=65)
-    demand = Demand(hd, 10, arg_data=[100, 198, 44, 132, 2, 134, 70, 72])
+    data = [Proc(100), Proc(198), Proc(44), Proc(132), Proc(2), Proc(134), Proc(70), Proc(72)]
+    demand = Demand(hd, count=10, arg_data=data)
     print demand.data, hd.start
-    algo = Cscan(hd, demand)
+    algo = Fcfs(hd, demand)
     algo.process()
     print algo.score
-    print Proc.from_random(10, 3)
 
 
 
