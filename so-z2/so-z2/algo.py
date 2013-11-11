@@ -41,7 +41,7 @@ class Proc(object):
         return cmp(self.no, other.no)
 
     def __repr__(self):
-        return "<PROC: n: {0}, d: {1}>".format(self.no, self.deadline)
+        return "<PROC: n: {0}, d: {1}, {2}>".format(self.no, self.deadline, self._is_real)
 
 
 class Hd(object):
@@ -129,17 +129,36 @@ class Edf(RealTime):
 
     def process(self):
         # real processes
-        real_proc = sorted([i for i in demand.data if i.is_real], key=lambda x: x.deadline)
-        self.move(self.first, real_proc[0])
-        for i, j in pairwise(real_proc):
-            self.move(i, j)
+        real_proc = sorted([i for i in self.demand.data if i.is_real], key=lambda x: x.deadline)
+        if real_proc:
+            self.move(self.first, real_proc[0])
+            for i, j in pairwise(real_proc):
+                self.move(i, j)
 
         # normal processes
-        normal_proc = [i for i in demand.data if not i.is_real]
-        algo = self.algo(hd, Demand(hd=self.hd, count=len(normal_proc), arg_data=normal_proc))
-        algo.process()
-        self._score.extend(algo._score)
+        normal_proc = [i for i in self.demand.data if not i.is_real]
+        if normal_proc:
+            algo = self.algo(self.hd, Demand(hd=self.hd, count=len(normal_proc), arg_data=normal_proc))
+            algo.first = real_proc[-1]
+            algo.process()
+            self._score.extend(algo._score)
 
+class Fdscan(RealTime):
+    def __init__(self, algo, hd, demand):
+        super(Fdscan, self).__init__(algo, hd, demand)
+
+    def get_closest(self, iterable):
+        item = min(iterable, key=lambda x: x.deadline)
+        return iterable.index(item)
+
+    def process(self):
+        start = 0
+        self.move(self.first, self.demand.data[0])
+        real_proc = sorted([i for i in self.demand.data if i.is_real], key=lambda x: x.deadline)
+        for i in real_proc:
+            idx = self.demand.data.index(i)
+            for i, j in pairwise(self.demand.data[start:idx+1]):
+                self.move(i, j)
 
 
 
@@ -202,7 +221,7 @@ if __name__ == '__main__':
     data = [Proc(100), Proc(198), Proc(44), Proc(132), Proc(2), Proc(134), Proc(70), Proc(72)]
     demand = Demand(hd, count=10, arg_data=data)
     print demand.data, hd.start
-    algo = Edf(Fcfs, hd, demand)
+    algo = Fdscan(Fcfs, hd, demand)
     algo.process()
     print algo.score
 

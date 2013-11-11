@@ -29,7 +29,7 @@
       <file leaf-file-name="algo.py" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/so-z2/algo.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="126" column="41" selection-start="2830" selection-end="2830" vertical-scroll-proportion="1.6614584" vertical-offset="1504" max-vertical-offset="3672">
+            <state line="148" column="0" selection-start="3653" selection-end="3653" vertical-scroll-proportion="0.3359375" vertical-offset="2387" max-vertical-offset="3995">
               <folding>
                 <element signature="e#31#44#0" expanded="true" />
               </folding>
@@ -350,7 +350,11 @@
       <created>1384167377162</created>
       <updated>1384167377162</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="implemented Edf algorithm">
+      <created>1384174560689</created>
+      <updated>1384174560689</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -362,11 +366,11 @@
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.24963397" sideWeight="0.6710311" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.24963397" sideWeight="0.6710311" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.39934534" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
-      <window_info id="Run" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.3289689" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.3289689" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
@@ -390,11 +394,12 @@
     <MESSAGE value="implemented CSCAN algorithm" />
     <MESSAGE value="added class that represents process" />
     <MESSAGE value="changed Proc class" />
-    <option name="LAST_COMMIT_MESSAGE" value="changed Proc class" />
+    <MESSAGE value="implemented Edf algorithm" />
+    <option name="LAST_COMMIT_MESSAGE" value="implemented Edf algorithm" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
-      <option name="time" value="5" />
+      <option name="time" value="7" />
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
@@ -418,7 +423,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/so-z2/algo.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="126" column="41" selection-start="2830" selection-end="2830" vertical-scroll-proportion="1.6614584" vertical-offset="1504" max-vertical-offset="3672">
+        <state line="148" column="0" selection-start="3653" selection-end="3653" vertical-scroll-proportion="0.3359375" vertical-offset="2387" max-vertical-offset="3995">
           <folding>
             <element signature="e#31#44#0" expanded="true" />
           </folding>
