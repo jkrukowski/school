@@ -16,15 +16,20 @@ def pairwise(iterable):
 class Proc(object):
     """Represents single IO item"""
 
-    def __init__(self, no, deadline=None):
+    def __init__(self, no, deadline=None, real_prob=0.3):
         self.no = no
         self.deadline = deadline
+        self._is_real = random.random() < real_prob
         if self.deadline is None:
             self.deadline = random.randint(0, MAX_DEADLINE)
 
     @classmethod
     def from_random(cls, max_no):
         return cls(random.randint(0, max_no))
+
+    @property
+    def is_real(self):
+        return self._is_real
 
     def __sub__(self, other):
         return Proc(self.no - other.no, self.deadline)
@@ -97,6 +102,47 @@ class Algo(object):
         return sum(self._score)
 
 
+class RealTime(object):
+    """Base class for realtime algorithms"""
+
+    def __init__(self, algo, hd, demand):
+        self.hd = hd
+        self.demand = demand
+        self.algo = algo
+        self._score = []
+        self.first = hd.start
+
+    def move(self, start, to):
+        self._score.append(abs(start - to).no)
+
+    @property
+    def score(self):
+        return sum(self._score)
+
+    def process(self):
+        raise NotImplementedError()
+
+
+class Edf(RealTime):
+    def __init__(self, algo, hd, demand):
+        super(Edf, self).__init__(algo, hd, demand)
+
+    def process(self):
+        # real processes
+        real_proc = sorted([i for i in demand.data if i.is_real], key=lambda x: x.deadline)
+        self.move(self.first, real_proc[0])
+        for i, j in pairwise(real_proc):
+            self.move(i, j)
+
+        # normal processes
+        normal_proc = [i for i in demand.data if not i.is_real]
+        algo = self.algo(hd, Demand(hd=self.hd, count=len(normal_proc), arg_data=normal_proc))
+        algo.process()
+        self._score.extend(algo._score)
+
+
+
+
 class Fcfs(Algo):
     def __init__(self, hd, demand):
         super(Fcfs, self).__init__(hd, demand)
@@ -156,7 +202,7 @@ if __name__ == '__main__':
     data = [Proc(100), Proc(198), Proc(44), Proc(132), Proc(2), Proc(134), Proc(70), Proc(72)]
     demand = Demand(hd, count=10, arg_data=data)
     print demand.data, hd.start
-    algo = Fcfs(hd, demand)
+    algo = Edf(Fcfs, hd, demand)
     algo.process()
     print algo.score
 
