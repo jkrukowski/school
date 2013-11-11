@@ -29,7 +29,7 @@
       <file leaf-file-name="algo.py" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/so-z2/algo.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="148" column="0" selection-start="3653" selection-end="3653" vertical-scroll-proportion="0.3359375" vertical-offset="2387" max-vertical-offset="3995">
+            <state line="151" column="19" selection-start="3708" selection-end="3708" vertical-scroll-proportion="-0.22135417" vertical-offset="2652" max-vertical-offset="4165">
               <folding>
                 <element signature="e#31#44#0" expanded="true" />
               </folding>
@@ -120,12 +120,12 @@
   </component>
   <component name="PropertiesComponent">
     <property name="options.splitter.main.proportions" value="0.3" />
-    <property name="recentsLimit" value="5" />
     <property name="options.lastSelected" value="vcs.Mercurial" />
+    <property name="recentsLimit" value="5" />
     <property name="restartRequiresConfirmation" value="true" />
     <property name="FullScreen" value="false" />
-    <property name="options.searchVisible" value="true" />
     <property name="options.splitter.details.proportions" value="0.2" />
+    <property name="options.searchVisible" value="true" />
   </component>
   <component name="PyConsoleOptionsProvider">
     <option name="myPythonConsoleState">
@@ -354,14 +354,17 @@
       <created>1384174560689</created>
       <updated>1384174560689</updated>
     </task>
-    <option name="localTasksCounter" value="8" />
+    <task id="LOCAL-00008" summary="started implementing Fdscan algorithm">
+      <created>1384177903468</created>
+      <updated>1384177903468</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="ToolWindowManager">
     <frame x="-4" y="-4" width="1374" height="732" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
@@ -376,6 +379,7 @@
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
@@ -395,7 +399,8 @@
     <MESSAGE value="added class that represents process" />
     <MESSAGE value="changed Proc class" />
     <MESSAGE value="implemented Edf algorithm" />
-    <option name="LAST_COMMIT_MESSAGE" value="implemented Edf algorithm" />
+    <MESSAGE value="started implementing Fdscan algorithm" />
+    <option name="LAST_COMMIT_MESSAGE" value="started implementing Fdscan algorithm" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -403,6 +408,15 @@
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/so-z2/algo.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="148" column="0" selection-start="3653" selection-end="3653" vertical-scroll-proportion="0.0" vertical-offset="2370" max-vertical-offset="3995">
+          <folding>
+            <element signature="e#31#44#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/so-z2/algo.py">
       <provider selected="true" editor-type-id="text-editor">
         <state line="16" column="24" selection-start="323" selection-end="323" vertical-scroll-proportion="0.0" vertical-offset="160" max-vertical-offset="2312">
@@ -423,7 +437,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/so-z2/algo.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="148" column="0" selection-start="3653" selection-end="3653" vertical-scroll-proportion="0.3359375" vertical-offset="2387" max-vertical-offset="3995">
+        <state line="151" column="19" selection-start="3708" selection-end="3708" vertical-scroll-proportion="-0.22135417" vertical-offset="2652" max-vertical-offset="4165">
           <folding>
             <element signature="e#31#44#0" expanded="true" />
           </folding>

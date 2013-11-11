@@ -143,23 +143,36 @@ class Edf(RealTime):
             algo.process()
             self._score.extend(algo._score)
 
+
 class Fdscan(RealTime):
     def __init__(self, algo, hd, demand):
         super(Fdscan, self).__init__(algo, hd, demand)
 
-    def get_closest(self, iterable):
-        item = min(iterable, key=lambda x: x.deadline)
-        return iterable.index(item)
+    def get_idxs(self, iterable):
+        idxs = [-1]
+        for i in iterable:
+            idx = self.demand.data.index(i)
+            if idx > idxs[-1]:
+                idxs.append(idx)
+        idxs.append(len(self.demand.data))
+        return idxs
 
     def process(self):
-        start = 0
-        self.move(self.first, self.demand.data[0])
         real_proc = sorted([i for i in self.demand.data if i.is_real], key=lambda x: x.deadline)
-        for i in real_proc:
-            idx = self.demand.data.index(i)
-            for i, j in pairwise(self.demand.data[start:idx+1]):
-                self.move(i, j)
-
+        if real_proc:
+            idxs = self.get_idxs(real_proc)
+            for i, j in pairwise(idxs):
+                partial = self.demand.data[i + 1:j + 1]
+                if partial:
+                    algo = self.algo(self.hd, Demand(hd=self.hd, count=len(partial), arg_data=partial))
+                    algo.first = partial[-1]
+                    algo.process()
+                    self._score.extend(algo._score)
+        else:
+            algo = self.algo(self.hd, Demand(hd=self.hd, count=len(self.demand.data), arg_data=self.demand.data))
+            algo.first = self.demand.data[-1]
+            algo.process()
+            self._score.extend(algo._score)
 
 
 class Fcfs(Algo):
@@ -224,6 +237,3 @@ if __name__ == '__main__':
     algo = Fdscan(Fcfs, hd, demand)
     algo.process()
     print algo.score
-
-
-
