@@ -223,18 +223,8 @@ class Cscan(Algo):
 
     def process(self):
         higher = sorted([i for i in self.demand.data if i >= self.first])
-        higher.extend([Proc(hd.capacity - 1), Proc(0)])
+        higher.extend([Proc(self.hd.capacity - 1), Proc(0)])
         higher.extend(sorted([i for i in self.demand.data if i < self.first]))
         self.move(self.first, higher[0])
         for i, j in pairwise(higher):
             self.move(i, j)
-
-
-if __name__ == '__main__':
-    hd = Hd(200, arg_start=65)
-    data = [Proc(100), Proc(198), Proc(44), Proc(132), Proc(2), Proc(134), Proc(70), Proc(72)]
-    demand = Demand(hd, count=10, arg_data=data)
-    print demand.data, hd.start
-    algo = Ssft(hd, demand)
-    algo.process()
-    print algo.score
