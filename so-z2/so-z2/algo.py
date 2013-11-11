@@ -1,6 +1,7 @@
 __author__ = 'Janek Krukowski'
 import random
-from itertools import izip, tee, chain
+import copy
+from itertools import izip, tee
 
 random.seed()
 MAX_DEADLINE = 3
@@ -87,7 +88,7 @@ class Algo(object):
 
     def __init__(self, hd, demand):
         self.hd = hd
-        self.demand = demand
+        self.demand = copy.deepcopy(demand)
         self._score = []
         self.first = hd.start
 
@@ -107,7 +108,7 @@ class RealTime(object):
 
     def __init__(self, algo, hd, demand):
         self.hd = hd
-        self.demand = demand
+        self.demand = copy.deepcopy(demand)
         self.algo = algo
         self._score = []
         self.first = hd.start
@@ -234,6 +235,6 @@ if __name__ == '__main__':
     data = [Proc(100), Proc(198), Proc(44), Proc(132), Proc(2), Proc(134), Proc(70), Proc(72)]
     demand = Demand(hd, count=10, arg_data=data)
     print demand.data, hd.start
-    algo = Fdscan(Fcfs, hd, demand)
+    algo = Ssft(hd, demand)
     algo.process()
     print algo.score
