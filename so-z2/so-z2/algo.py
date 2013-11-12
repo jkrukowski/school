@@ -210,7 +210,7 @@ class Scan(Algo):
 
     def process(self):
         lower = sorted([i for i in self.demand.data if i < self.first], reverse=True)
-        lower.append(0)
+        lower.append(Proc(0))
         lower.extend(sorted([i for i in self.demand.data if i >= self.first]))
         self.move(self.first, lower[0])
         for i, j in pairwise(lower):
