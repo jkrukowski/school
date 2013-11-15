@@ -71,12 +71,14 @@ class Hd(object):
 class Demand(object):
     """Represents single demand"""
 
-    def __init__(self, hd, count, arg_data=None):
+    def __init__(self, hd, arg_data):
         self.hd = hd
-        self.count = count
         self._data = arg_data
-        if not arg_data:
-            self._data = [random.choice(self.hd.data) for i in xrange(self.count)]
+
+    @classmethod
+    def from_random(cls, hd, count):
+        data = [Proc(random.choice(hd.data)) for i in xrange(count)]
+        return cls(hd, data)
 
     @property
     def data(self):
@@ -151,7 +153,7 @@ class Edf(RealTime):
         # normal processes
         normal_proc = [i for i in self.demand.data if not i.is_real]
         if normal_proc:
-            algo = self.algo(self.hd, Demand(hd=self.hd, count=len(normal_proc), arg_data=normal_proc))
+            algo = self.algo(self.hd, Demand(hd=self.hd, arg_data=normal_proc))
             algo.first = real_proc[-1]
             algo.process()
             self._score.extend(algo._score)
@@ -181,12 +183,12 @@ class Fdscan(RealTime):
             for i, j in pairwise(idxs):
                 partial = self.demand.data[i + 1:j + 1]
                 if partial:
-                    algo = self.algo(self.hd, Demand(hd=self.hd, count=len(partial), arg_data=partial))
+                    algo = self.algo(self.hd, Demand(hd=self.hd, arg_data=partial))
                     algo.first = partial[-1]
                     algo.process()
                     self._score.extend(algo._score)
         else:
-            algo = self.algo(self.hd, Demand(hd=self.hd, count=len(self.demand.data), arg_data=self.demand.data))
+            algo = self.algo(self.hd, Demand(hd=self.hd, arg_data=self.demand.data))
             algo.first = self.demand.data[-1]
             algo.process()
             self._score.extend(algo._score)

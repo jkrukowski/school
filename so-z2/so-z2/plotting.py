@@ -5,14 +5,14 @@ from algo import *
 def generate_data():
     hd = Hd(200, arg_start=65)
     data = [Proc(100), Proc(198), Proc(44), Proc(132), Proc(2), Proc(134), Proc(70), Proc(72)]
-    demand = Demand(hd, count=len(data), arg_data=data)
+    demand = Demand(hd, arg_data=data)
     return hd, data, demand
 
 
 def generate_data_random(nmax=200):
     hd = Hd(nmax)
     data = [Proc.from_random(nmax) for i in xrange(10)]
-    demand = Demand(hd, count=len(data), arg_data=data)
+    demand = Demand(hd, arg_data=data)
     return hd, data, demand
 
 
