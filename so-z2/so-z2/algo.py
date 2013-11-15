@@ -102,6 +102,10 @@ class Algo(object):
     def score(self):
         return sum(self._score)
 
+    @property
+    def name(self):
+        raise NotImplementedError()
+
 
 class RealTime(object):
     """Base class for realtime algorithms"""
@@ -123,10 +127,18 @@ class RealTime(object):
     def process(self):
         raise NotImplementedError()
 
+    @property
+    def name(self):
+        raise NotImplementedError()
+
 
 class Edf(RealTime):
     def __init__(self, algo, hd, demand):
         super(Edf, self).__init__(algo, hd, demand)
+
+    @property
+    def name(self):
+        return "EDF"
 
     def process(self):
         # real processes
@@ -158,6 +170,10 @@ class Fdscan(RealTime):
         idxs.append(len(self.demand.data))
         return idxs
 
+    @property
+    def name(self):
+        return "FDSCAN"
+
     def process(self):
         real_proc = sorted([i for i in self.demand.data if i.is_real], key=lambda x: x.deadline)
         if real_proc:
@@ -180,6 +196,10 @@ class Fcfs(Algo):
     def __init__(self, hd, demand):
         super(Fcfs, self).__init__(hd, demand)
 
+    @property
+    def name(self):
+        return "FCFS"
+
     def process(self):
         self.move(self.first, self.demand.data[0])
         for i, j in pairwise(self.demand.data):
@@ -192,6 +212,10 @@ class Ssft(Algo):
 
     def get_closest(self, iterable, item):
         return min(iterable, key=lambda x: abs(x - item))
+
+    @property
+    def name(self):
+        return "SSFT"
 
     def process(self):
         closest = self.get_closest(self.demand.data, self.first)
@@ -208,6 +232,10 @@ class Scan(Algo):
     def __init__(self, hd, demand):
         super(Scan, self).__init__(hd, demand)
 
+    @property
+    def name(self):
+        return "SCAN"
+
     def process(self):
         lower = sorted([i for i in self.demand.data if i < self.first], reverse=True)
         lower.append(Proc(0))
@@ -220,6 +248,10 @@ class Scan(Algo):
 class Cscan(Algo):
     def __init__(self, hd, demand):
         super(Cscan, self).__init__(hd, demand)
+
+    @property
+    def name(self):
+        return "CSCAN"
 
     def process(self):
         higher = sorted([i for i in self.demand.data if i >= self.first])
