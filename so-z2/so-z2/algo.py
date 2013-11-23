@@ -52,7 +52,7 @@ class Hd(object):
         self.nmax = nmax
         self._data = [i for i in xrange(self.nmax)]
         self._start = Proc(arg_start)
-        if not arg_start:
+        if arg_start is None:
             self._start = Proc.from_random(self.nmax)
 
     @property
