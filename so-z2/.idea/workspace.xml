@@ -2,9 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="4f87a48c-3ec2-4149-afeb-527308673fcd" name="Default" comment="monor fixes">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/so-z2/algo.py" afterPath="$PROJECT_DIR$/so-z2/algo.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/so-z2/.ipynb_checkpoints/show_score-checkpoint.ipynb" afterPath="$PROJECT_DIR$/so-z2/.ipynb_checkpoints/show_score-checkpoint.ipynb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/so-z2/show_score.ipynb" afterPath="$PROJECT_DIR$/so-z2/show_score.ipynb" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../so-z3/so-z3/batch.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="so-z2.iws" />
@@ -31,7 +29,7 @@
       <file leaf-file-name="algo.py" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/so-z2/algo.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="253" column="13" selection-start="6474" selection-end="6474" vertical-scroll-proportion="0.5302491" vertical-offset="3969" max-vertical-offset="4556">
+            <state line="251" column="8" selection-start="6420" selection-end="6459" vertical-scroll-proportion="0.46975088" vertical-offset="3969" max-vertical-offset="4556">
               <folding />
             </state>
           </provider>
@@ -147,13 +145,13 @@
   </component>
   <component name="PropertiesComponent">
     <property name="options.splitter.main.proportions" value="0.3" />
-    <property name="options.lastSelected" value="editor.preferences.appearance" />
     <property name="recentsLimit" value="5" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/.." />
+    <property name="options.lastSelected" value="editor.preferences.appearance" />
     <property name="restartRequiresConfirmation" value="true" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="FullScreen" value="false" />
-    <property name="options.splitter.details.proportions" value="0.2" />
     <property name="options.searchVisible" value="true" />
+    <property name="options.splitter.details.proportions" value="0.2" />
   </component>
   <component name="PyConsoleOptionsProvider">
     <option name="myPythonConsoleState">
@@ -497,6 +495,13 @@
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/so-z2/plotting.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="5" column="29" selection-start="102" selection-end="102" vertical-scroll-proportion="0.0" vertical-offset="85" max-vertical-offset="765">
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/so-z2/algo.py">
       <provider selected="true" editor-type-id="text-editor">
         <state line="253" column="13" selection-start="6474" selection-end="6474" vertical-scroll-proportion="0.0" vertical-offset="4301" max-vertical-offset="4556">
@@ -597,7 +602,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/so-z2/algo.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="253" column="13" selection-start="6474" selection-end="6474" vertical-scroll-proportion="0.5302491" vertical-offset="3969" max-vertical-offset="4556">
+        <state line="251" column="8" selection-start="6420" selection-end="6459" vertical-scroll-proportion="0.46975088" vertical-offset="3969" max-vertical-offset="4556">
           <folding />
         </state>
       </provider>
