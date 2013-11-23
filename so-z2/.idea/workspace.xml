@@ -2,8 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="4f87a48c-3ec2-4149-afeb-527308673fcd" name="Default" comment="monor fixes">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../so-z3/so-z3/batch.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../so-z3/so-z3/batch.py" afterPath="$PROJECT_DIR$/../so-z3/so-z3/batch.py" />
     </list>
     <ignored path="so-z2.iws" />
     <ignored path=".idea/workspace.xml" />
