@@ -53,17 +53,18 @@ class Fifo(Algo):
 
 
 class Opt(Algo):
-    def swap(self, frame, **kwargs):
-        self.swaps += 1
-        tail = kwargs['tail']
+    def get_furthest(self, tail):
         index = []
         for i in self.data:
             try:
                 index.append(tail.index(i))
             except ValueError:
                 index.append(len(tail) + 1)
-        result = sorted(zip(self.data, index), key=lambda x: x[1], reverse=True)[0][0]
-        return self.data.index(result)
+        return sorted(zip(self.data, index), key=lambda x: x[1], reverse=True)[0][0]
+
+    def swap(self, frame, **kwargs):
+        self.swaps += 1
+        return self.data.index(self.get_furthest(kwargs['tail']))
 
 
 class Lru(Algo):
