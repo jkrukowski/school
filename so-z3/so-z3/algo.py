@@ -33,11 +33,6 @@ class Algo(object):
 
     def exists(self, frame):
         return frame in set(self.data.values())
-        #for k, v in self.data.iteritems():
-        #    if v and v.number == frame.number:
-        #        self.data[k] = v._replace(ref=v.ref+1)
-        #        return True
-        #return False
 
     def put(self, frame, **kwargs):
         if not self.exists(frame):
@@ -100,9 +95,35 @@ class Lru(Algo):
 
 
 class Alru(Algo):
+    def __init__(self, count):
+        super(Alru, self).__init__(count)
+        self.buff = {}
+
+    def put(self, frame, **kwargs):
+        if not self.exists(frame):
+            key = self.find_key(frame, **kwargs)
+            self.data[key] = frame
+            self.buff[frame] = 0
+        else:
+            self.buff[frame] = 1
+
     def swap(self, frame, **kwargs):
-        pass
+        self.swaps += 1
+        found = False
+        while not found:
+            result = self.last_swapped
+            self.last_swapped += 1
+            self.last_swapped %= len(self.data)
+            frm = self.data[result]
+            if self.buff[frm] == 0:
+                self.buff.pop(frm)
+                return result
+            else:
+                self.buff[frm] = 0
+
+
 
 class Rand(Algo):
     def swap(self, frame, **kwargs):
+        self.swaps += 1
         return random.choice(self.data.keys())
