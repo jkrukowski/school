@@ -22,17 +22,17 @@ class Algo(object):
         self.swaps = 0
         self.last_swapped = 0
         self.count = count
-        self.data = {i: None for i in xrange(count)}
+        self.data = [None for i in xrange(count)]
 
     def find_key(self, frame, **kwargs):
-        for k, v in self.data.iteritems():
-            if not v:
+        for index, item in enumerate(self.data):
+            if not item:
                 self.swaps += 1
-                return k
+                return index
         return self.swap(frame, **kwargs)
 
     def exists(self, frame):
-        return frame in set(self.data.values())
+        return frame in set(self.data)
 
     def put(self, frame, **kwargs):
         if not self.exists(frame):
@@ -57,13 +57,13 @@ class Opt(Algo):
         self.swaps += 1
         tail = kwargs['tail']
         index = []
-        for i in self.data.values():
+        for i in self.data:
             try:
                 index.append(tail.index(i))
             except ValueError:
-                index.append(-1)
-        result = sorted(zip(self.data.values(), index), key=lambda x: x[1], reverse=True)
-        return result[0][1]
+                index.append(len(tail) + 1)
+        result = sorted(zip(self.data, index), key=lambda x: x[1], reverse=True)[0][0]
+        return self.data.index(result)
 
 
 class Lru(Algo):
@@ -79,11 +79,7 @@ class Lru(Algo):
         self.buff.append(frame)
 
     def last_used(self):
-        last = self.buff[0]
-        for k, v in self.data.iteritems():
-            if v == last:
-                return k
-        raise Exception("This should never happen")
+        return self.data.index(self.buff[0])
 
     def put(self, frame, **kwargs):
         super(Lru, self).put(frame, **kwargs)
@@ -122,8 +118,7 @@ class Alru(Algo):
                 self.buff[frm] = 0
 
 
-
 class Rand(Algo):
     def swap(self, frame, **kwargs):
         self.swaps += 1
-        return random.choice(self.data.keys())
+        return random.randrange(self.count)
