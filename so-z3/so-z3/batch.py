@@ -1,19 +1,29 @@
-__author__ = 'Janek'
+__author__ = 'Janek Krukowski'
 from algo import *
 
 
-def run():
-    data = get_calls(1, 2, 3, 4, 1, 2, 5, 1, 2, 3, 4, 5)
-    #data = get_random_calls(nmax=10)
-    fifo, opt, lru, alru, rand = Fifo(count=4), Opt(count=4), Lru(count=4), Alru(count=4), Rand(count=4)
+def get_algos(count):
+    return {
+        "fifo": Fifo(count=count),
+        "opt": Opt(count=count),
+        "lru": Lru(count=count),
+        "alru": Alru(count=count),
+        "rand": Rand(count=count)
+    }
+
+
+def put_data(algos, data):
     for index, frame in enumerate(data):
-        fifo.put(frame)
-        opt.put(frame, tail=data[index + 1:])
-        lru.put(frame)
-        alru.put(frame)
-        rand.put(frame)
-    print fifo.swaps, opt.swaps, lru.swaps, alru.swaps, rand.swaps
+        for key, val in algos.iteritems():
+            val.put(frame, tail=data[index + 1:])
+    return {key: val.swaps for key, val in algos.iteritems()}
+
+
+def run(nmax, count, fcount):
+    data = get_random_calls(nmax=nmax, count=count)
+    algos = get_algos(count=fcount)
+    return put_data(algos, data)
 
 
 if __name__ == "__main__":
-    run()
+    print run(nmax=10, count=1000, fcount=4)

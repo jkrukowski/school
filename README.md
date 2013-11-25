@@ -6,3 +6,4 @@ SO - systemy operacyjne:
 ------------------------
 1. SO-Z1 - task 1
 2. SO-Z2 - task 2
+3. SO-Z2 - task 3
