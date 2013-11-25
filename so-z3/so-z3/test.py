@@ -5,6 +5,7 @@ from batch import get_algos, put_data
 from nose.tools import eq_
 import random
 
+
 def test_call_equlas_frames():
     count = random.randint(0, 1000)
     data = get_calls(*[i for i in xrange(count)])
