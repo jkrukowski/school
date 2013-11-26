@@ -30,3 +30,26 @@ def test_repeated_frames():
     score = put_data(get_algos(count), data)
     for key, val in score.iteritems():
         eq_(val, count)
+
+
+def test_fifo_small():
+    count = 2
+    data = get_calls(1, 2, 3, 4)
+    fifo = Fifo(count=count)
+    for index, item in enumerate(data):
+        fifo.put(item)
+        eq_(fifo.data[index % count], item)
+
+
+def test_opt_small():
+    count = 2
+    data = get_calls(1, 2, 3, 1, 2)
+    opt = Opt(count=count)
+    for index, item in enumerate(data):
+        opt.put(item, tail=data[index + 1:])
+        if index == 2:
+            eq_(opt.data[0], Frame(number=1))
+            eq_(opt.data[1], Frame(number=3))
+        elif index == 4:
+            eq_(opt.data[0], Frame(number=2))
+            eq_(opt.data[1], Frame(number=3))
