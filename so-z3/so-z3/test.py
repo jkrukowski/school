@@ -69,3 +69,15 @@ def test_lru_small():
             eq_(lru.data[2], Frame(number=4))
         elif index == 11:
             eq_(lru.data[0], Frame(number=5))
+
+
+def test_small_alru():
+    count = 2
+    data = get_calls(1, 2, 1, 3, 2)
+    alru = Alru(count=count)
+    for index, item in enumerate(data):
+        alru.put(item)
+        if index == 3:
+            eq_(alru.data[1], Frame(number=3))
+        if index == 4:
+            eq_(alru.data[0], Frame(number=2))
