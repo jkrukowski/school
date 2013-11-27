@@ -53,3 +53,19 @@ def test_opt_small():
         elif index == 4:
             eq_(opt.data[0], Frame(number=2))
             eq_(opt.data[1], Frame(number=3))
+
+
+def test_lru_small():
+    count = 4
+    data = get_calls(1, 2, 3, 4, 1, 2, 5, 1, 2, 3, 4, 5)
+    lru = Lru(count=count)
+    for index, item in enumerate(data):
+        lru.put(item)
+        if index == 6:
+            eq_(lru.data[2], Frame(number=5))
+        elif index == 9:
+            eq_(lru.data[3], Frame(number=3))
+        elif index == 10:
+            eq_(lru.data[2], Frame(number=4))
+        elif index == 11:
+            eq_(lru.data[0], Frame(number=5))
