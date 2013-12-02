@@ -11,7 +11,7 @@ def get_calls(*args):
     return [Frame(number=i) for i in args]
 
 
-def get_random_calls(nmax, count=1000):
+def get_random_calls(nmax, count=1000, local_fator=0.8):
     return [Frame(number=random.randint(0, nmax)) for i in xrange(count)]
 
 
