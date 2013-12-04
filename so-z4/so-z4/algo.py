@@ -19,6 +19,7 @@ def single_call(r, count):
         yield Frame(number=result)
         num = result
 
+
 def get_random_calls(r, count=1000):
     return [i for i in single_call(r, count)]
 

@@ -4,16 +4,16 @@ from algo import *
 import random
 
 
-class Process(object):
-    def __init__(self, algo, frames_count, calls):
-        self.algo = algo(frames_count)
-        self.frames = frames_count
+class Process(Lru):
+    def __init__(self, frames_count, calls):
+        super(Process, self).__init__(frames_count)
         self.calls = calls
         self._initial_size = len(calls)
+        self.pointer = 0
 
     @property
     def is_done(self):
-        return not self.calls
+        return self.pointer == len(self.calls) - 1
 
     @property
     def size(self):
@@ -23,44 +23,64 @@ class Process(object):
     def initial_size(self):
         return self._initial_size
 
-    @property
-    def swaps(self):
-        return self.algo.swaps
+    def reset(self):
+        self.pointer = 0
 
     def put(self):
-        self.algo.put(self.calls.pop())
+        if not self.is_done:
+            super(Process, self).put(self.calls[self.pointer])
+            self.pointer += 1
+
+    def __repr__(self):
+        return "<PROCESS: len={0}, init_len={1}, frames={2}>".format(len(self.calls) - self.pointer - 1,
+                                                                     len(self.calls),
+                                                                     self.count)
 
 
 class ProcessManager(object):
-    def __init__(self, process_count=10, process_frames=4, system_frames=60,
-                 min_process_calls=500, max_process_calls=5000,
-                 swap_algo=Lru, allo_type="stable"):
+    def __init__(self, process_count=2, process_frames=4, system_frames=60,
+                 min_process_calls=500, max_process_calls=5000, allo_type="stable"):
         self.process_count = process_count
         self.process_frames = process_frames
         self.system_frames = system_frames
         self.min_process_calls = min_process_calls
         self.max_process_calls = max_process_calls
-        self.swap_algo = swap_algo
         self.allo_type = allo_type
         self.proc_set = {self.create_process() for i in xrange(self.process_count)}
+        self.set_frames()
 
-    def get_process_calls(self):
-        return get_random_calls(10, random.randint(self.min_process_calls, self.max_process_calls))
-
-    def get_process_frames(self):
-        return self.process_frames
+    def set_frames(self):
+        pass
 
     def create_process(self):
-        nframes = self.get_process_frames()
-        calls = self.get_process_calls(nframes)
-        proc = Process(self.swap_algo, nframes, calls)
-        self.proc_set.add(proc)
-        return proc
+        calls = get_random_calls(4, random.randint(self.min_process_calls, self.max_process_calls))
+        nframes = self.process_frames
+        return Process(nframes, calls)
 
     def tick(self):
         for proc in self.proc_set:
             proc.put()
 
+    @property
+    def swaps(self):
+        return sum(p.swaps for p in self.proc_set)
+
+    @property
+    def finished(self):
+        for p in self.proc_set:
+            if not p.is_done:
+                return False
+        return True
+
+    def __repr__(self):
+        "\n".join([str(i) for i in self.proc_set])
+
+
 if __name__ == "__main__":
-    pm = ProcessManager()
-    pm.tick()
+    for i in xrange(10):
+        pm = ProcessManager()
+        while not pm.finished:
+            pm.tick()
+            print pm
+        print pm.swaps
+
