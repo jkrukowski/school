@@ -30,7 +30,6 @@ class Algo(object):
     def __init__(self, count):
         self.swaps = 0
         self.last_swapped = 0
-        self.count = count
         self.data = [None for i in xrange(count)]
 
     def find_key(self, frame, **kwargs):
@@ -50,17 +49,19 @@ class Algo(object):
             self.data[key] = frame
         return key
 
-    def extend(self, count):
-        self.data.extend([None for i in xrange(count)])
-
-    def shrink(self, count):
-        if count >= len(self.data):
-            raise ValueError("Cannot shrink by {0}, frame length is {1}".format(count, len(self.data)))
-        for i in xrange(count):
-            self.data.pop()
+    def set_frame_length(self, length):
+        val = length - len(self)
+        if val > 0:
+            self.data.extend([None for i in xrange(val)])
+        else:
+            for i in xrange(val):
+                self.data.pop()
 
     def swap(self, frame, **kwargs):
         raise NotImplementedError()
+
+    def __len__(self):
+        return len(self.data)
 
 
 class Fifo(Algo):
@@ -68,7 +69,7 @@ class Fifo(Algo):
         self.swaps += 1
         result = self.last_swapped
         self.last_swapped += 1
-        self.last_swapped %= len(self.data)
+        self.last_swapped %= len(self)
         return result
 
 
@@ -110,6 +111,16 @@ class Lru(Algo):
         self.swaps += 1
         return self.last_used()
 
+    def set_frame_length(self, length):
+        val = length - len(self)
+        if val > 0:
+            self.data.extend([None for i in xrange(val)])
+            self.buff.extend([None for i in xrange(val)])
+        else:
+            for i in xrange(abs(val)):
+                self.data.pop()
+                self.buff.pop()
+
 
 class Alru(Algo):
     def __init__(self, count):
@@ -130,7 +141,7 @@ class Alru(Algo):
         while not found:
             result = self.last_swapped
             self.last_swapped += 1
-            self.last_swapped %= len(self.data)
+            self.last_swapped %= len(self)
             frm = self.data[result]
             if self.buff[frm] == 0:
                 self.buff.pop(frm)

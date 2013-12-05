@@ -4,7 +4,8 @@ from algo import *
 import random
 import math
 from numpy import histogram
-from itertools import izip, tee
+import copy
+from itertools import izip, tee, cycle
 
 
 def pairwise(iterable):
@@ -12,6 +13,24 @@ def pairwise(iterable):
     a, b = tee(iterable)
     next(b, None)
     return izip(a, b)
+
+
+def group_edges(data, n):
+    k = int(math.sqrt(n))
+    _, edges = histogram(data, k)
+    return edges
+
+
+def group(data, edges):
+    groups = []
+    for lower, upper in pairwise(edges):
+        groups.append([p for p in data if lower <= p.size <= upper])
+    return groups
+
+
+def get_process_calls(processes=10, frames=4, min_process_calls=500, max_process_calls=5000):
+    return [get_random_calls(frames, random.randint(min_process_calls, max_process_calls)) for i in xrange(processes)]
+
 
 class Process(Lru):
     def __init__(self, frames_count, calls, allo_type):
@@ -27,7 +46,7 @@ class Process(Lru):
 
     @property
     def size(self):
-        return len(self.calls) - self.pointer
+        return self._initial_size - self.pointer
 
     @property
     def initial_size(self):
@@ -44,44 +63,46 @@ class Process(Lru):
     def __repr__(self):
         return "<PROCESS: len={0}, init_len={1}, frames={2}>".format(len(self.calls) - self.pointer - 1,
                                                                      len(self.calls),
-                                                                     self.count)
+                                                                     len(self))
 
 
 class ProcessManager(object):
-    def __init__(self, process_count=10, process_frames=4, system_frames=60,
-                 min_process_calls=500, max_process_calls=5000, allo_type="prop"):
-        self.process_count = process_count
+    def __init__(self, proc_data, process_frames=4, system_frames=40, allo_type="stable"):
+        self.proc_data = proc_data
+        self.process_count = len(proc_data)
         self.process_frames = process_frames
         self.system_frames = system_frames
-        self.min_process_calls = min_process_calls
-        self.max_process_calls = max_process_calls
         self.allo_type = allo_type
-        self.proc_set = {self.create_process() for i in xrange(self.process_count)}
+        self.proc_set = self.create_processes()
         if self.allo_type == "prop":
             self.set_process_frames()
 
     def set_process_frames(self):
-        data = [proc.size for proc in self.proc_set]
-        k = int(math.sqrt(self.process_count))
-        _, edges = histogram(data, k)
-        groups = []
-        for lower, upper in pairwise(edges):
-            groups.append([p for p in self.proc_set if lower <= p.size <= upper])
-        frames_group = [i+self.process_frames for i in xrange(len(groups))]
+        edg = group_edges([proc.size for proc in self.proc_set], self.process_count)
+        grp = group(self.proc_set, edg)
+        assiged = self.increase_frames(grp, [i + self.process_frames for i in xrange(len(grp))])
+        self.decrease_frames(assiged)
+
+    def create_processes(self):
+        return {Process(self.process_frames, d, self.allo_type) for d in self.proc_data}
+
+    def increase_frames(self, groups, frames_group):
         assiged = 0
         for gr, fr in izip(groups, frames_group):
             for p in gr:
-                p.count = fr
+                p.set_frame_length(fr)
                 assiged += fr
-        if self.system_frames < assiged:
-            for i in xrange(self.system_frames - assiged):
-                for proc in self.proc_set:
-                    proc.count -= 1
+        return assiged
 
-    def create_process(self):
-        calls = get_random_calls(4, random.randint(self.min_process_calls, self.max_process_calls))
-        nframes = self.process_frames
-        return Process(nframes, calls, self.allo_type)
+    def decrease_frames(self, value):
+        proc_list = set(self.proc_set)
+        while self.system_frames < value:
+            if not proc_list:
+                proc_list = set(self.proc_set)
+            proc = min(proc_list, key=lambda x: len(x))
+            proc.set_frame_length(len(proc) - 1)
+            value -= 1
+            proc_list.remove(proc)
 
     def tick(self):
         for proc in self.proc_set:
@@ -103,11 +124,17 @@ class ProcessManager(object):
 
 
 if __name__ == "__main__":
-    pm = ProcessManager()
-    while not pm.finished:
-        pm.tick()
-    print pm.swaps
+    for i in xrange(10000):
+        data = get_process_calls()
+        proc = {
+            "stable": ProcessManager(data, allo_type="stable"),
+            "prop": ProcessManager(data, allo_type="prop")
+        }
+        result = {}
+        for n, p in proc.iteritems():
+            while not p.finished:
+                p.tick()
+            result[n] = p.swaps
+        print result["stable"] - result["prop"]
 
-# TODO:
-# 1. remove generating data to separate outer function
 
