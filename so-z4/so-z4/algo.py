@@ -1,6 +1,6 @@
 __author__ = 'Janek Krukowski'
 
-from collections import namedtuple
+from collections import namedtuple, deque
 import random
 
 random.seed()
@@ -22,6 +22,38 @@ def single_call(r, count):
 
 def get_random_calls(r, count=1000):
     return [i for i in single_call(r, count)]
+
+
+class Buff(object):
+    def __init__(self, size):
+        self.size = size
+        self.buff = deque()
+        self.pointer = 0
+
+    def last_used(self):
+        if not self.buff:
+            raise ValueError("Buffer is empty")
+        return self.buff[0]
+
+    def append(self, item):
+        if item in self.buff:
+            self.buff.remove(item)
+            self.buff.append(item)
+        else:
+            if self.size == len(self.buff):
+                self.buff.popleft()
+            self.buff.append(item)
+
+    def expand(self, value):
+        self.size += value
+
+    def remove(self, item):
+        if item is not None:
+            self.buff.remove(item)
+        self.size -= 1
+
+    def __repr__(self):
+        return "<BUFF size:{0} {1}".format(self.size, self.buff)
 
 
 class Algo(object):
@@ -54,7 +86,7 @@ class Algo(object):
         if val > 0:
             self.data.extend([None for i in xrange(val)])
         else:
-            for i in xrange(val):
+            for i in xrange(abs(val)):
                 self.data.pop()
 
     def swap(self, frame, **kwargs):
@@ -91,21 +123,14 @@ class Opt(Algo):
 class Lru(Algo):
     def __init__(self, count):
         super(Lru, self).__init__(count)
-        self.buff = [None for i in xrange(count)]
-
-    def fill_buff(self, frame):
-        try:
-            self.buff.remove(frame)
-        except ValueError:
-            self.buff.pop(0)
-        self.buff.append(frame)
+        self.buff = Buff(count)
 
     def last_used(self):
-        return self.data.index(self.buff[0])
+        return self.data.index(self.buff.last_used())
 
     def put(self, frame, **kwargs):
         super(Lru, self).put(frame, **kwargs)
-        self.fill_buff(frame)
+        self.buff.append(frame)
 
     def swap(self, frame, **kwargs):
         self.swaps += 1
@@ -115,11 +140,11 @@ class Lru(Algo):
         val = length - len(self)
         if val > 0:
             self.data.extend([None for i in xrange(val)])
-            self.buff.extend([None for i in xrange(val)])
+            self.buff.expand(val)
         else:
             for i in xrange(abs(val)):
-                self.data.pop()
-                self.buff.pop()
+                to_remove = self.data.pop()
+                self.buff.remove(to_remove)
 
 
 class Alru(Algo):

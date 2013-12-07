@@ -4,8 +4,7 @@ from algo import *
 import random
 import math
 from numpy import histogram
-import copy
-from itertools import izip, tee, cycle
+from itertools import izip, tee
 
 
 def pairwise(iterable):
@@ -33,11 +32,10 @@ def get_process_calls(processes=10, frames=4, min_process_calls=500, max_process
 
 
 class Process(Lru):
-    def __init__(self, frames_count, calls, allo_type):
+    def __init__(self, frames_count, calls):
         super(Process, self).__init__(frames_count)
         self.calls = calls
         self._initial_size = len(calls)
-        self.allo_type = allo_type
         self.pointer = 0
 
     @property
@@ -66,25 +64,50 @@ class Process(Lru):
                                                                      len(self))
 
 
-class ProcessManager(object):
-    def __init__(self, proc_data, process_frames=4, system_frames=40, allo_type="stable"):
+class Manager(object):
+    def __init__(self, proc_data, process_frames=4, system_frames=8):
         self.proc_data = proc_data
         self.process_count = len(proc_data)
         self.process_frames = process_frames
         self.system_frames = system_frames
-        self.allo_type = allo_type
         self.proc_set = self.create_processes()
-        if self.allo_type == "prop":
-            self.set_process_frames()
+
+    def create_processes(self):
+        return {Process(self.process_frames, d) for d in self.proc_data}
+
+    def tick(self):
+        for proc in self.proc_set:
+            proc.put()
+
+    def process(self):
+        while not self.finished:
+            self.tick()
+
+    @property
+    def swaps(self):
+        return sum(p.swaps for p in self.proc_set)
+
+    @property
+    def finished(self):
+        for p in self.proc_set:
+            if not p.is_done:
+                return False
+        return True
+
+    def __repr__(self):
+        return "\n".join([str(i) for i in self.proc_set])
+
+
+class PropManager(Manager):
+    def __init__(self, proc_data, process_frames=4, system_frames=40):
+        super(PropManager, self).__init__(proc_data, process_frames, system_frames)
+        self.set_process_frames()
 
     def set_process_frames(self):
         edg = group_edges([proc.size for proc in self.proc_set], self.process_count)
         grp = group(self.proc_set, edg)
         assiged = self.increase_frames(grp, [i + self.process_frames for i in xrange(len(grp))])
         self.decrease_frames(assiged)
-
-    def create_processes(self):
-        return {Process(self.process_frames, d, self.allo_type) for d in self.proc_data}
 
     def increase_frames(self, groups, frames_group):
         assiged = 0
@@ -104,37 +127,45 @@ class ProcessManager(object):
             value -= 1
             proc_list.remove(proc)
 
-    def tick(self):
-        for proc in self.proc_set:
-            proc.put()
 
-    @property
-    def swaps(self):
-        return sum(p.swaps for p in self.proc_set)
+class FaultManager(Manager):
+    def __init__(self, proc_data, process_frames=5, system_frames=50, check_interval=10):
+        super(FaultManager, self).__init__(proc_data, process_frames, system_frames)
+        self.check_interval = check_interval
 
-    @property
-    def finished(self):
-        for p in self.proc_set:
-            if not p.is_done:
-                return False
-        return True
+    def manage_frames(self):
+        proc_list = set(self.proc_set)
+        fmax = max(proc_list, key=lambda x: x.swaps)
+        proc_list.remove(fmax)
+        while len(fmax) < 2 and proc_list:
+            fmax = max(proc_list, key=lambda x: x.swaps)
+            proc_list.remove(fmax)
 
-    def __repr__(self):
-        "\n".join([str(i) for i in self.proc_set])
+        fmin = min(self.proc_set, key=lambda x: x.swaps)
+        if fmin != fmax and len(fmin) > 2:
+            fmax.set_frame_length(len(fmax) + 1)
+            fmin.set_frame_length(len(fmin) - 1)
+
+    def process(self):
+        step = 0
+        while not self.finished:
+            self.tick()
+            step += 1
+            if step % self.check_interval == 0:
+                self.manage_frames()
 
 
 if __name__ == "__main__":
-    for i in xrange(10000):
-        data = get_process_calls()
-        proc = {
-            "stable": ProcessManager(data, allo_type="stable"),
-            "prop": ProcessManager(data, allo_type="prop")
-        }
-        result = {}
-        for n, p in proc.iteritems():
-            while not p.finished:
-                p.tick()
-            result[n] = p.swaps
-        print result["stable"] - result["prop"]
+    data = get_process_calls()
+    proc = {
+        "stable": Manager(data),
+        "prop": PropManager(data),
+        "fault": FaultManager(data)
+    }
+    result = {}
+    for n, p in proc.iteritems():
+        p.process()
+        result[n] = p.swaps
+    print result
 
 
