@@ -156,7 +156,7 @@ class FaultManager(Manager):
 
 
 if __name__ == "__main__":
-    data = get_process_calls()
+    data = get_process_calls(processes=10, frames=1, min_process_calls=5, max_process_calls=5)
     proc = {
         "stable": Manager(data),
         "prop": PropManager(data),
